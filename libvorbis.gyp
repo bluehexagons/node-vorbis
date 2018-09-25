@@ -41,7 +41,7 @@
     # common vorbis stuff
     'include_dirs': [
       # platform and arch-specific headers
-      'libvorbis/config/<(OS)/<(target_arch)',
+      'config/<(OS)/<(target_arch)',
       # the location of the libogg header files
       '<@(ogg_include_dirs)',
       'libvorbis/include',
