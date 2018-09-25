@@ -1,0 +1,3 @@
+[submodule "libvorbis"]
+	path = libvorbis
+	url = git@github.com:xiph/vorbis.git

@@ -7,8 +7,8 @@
         'src/binding.cc',
       ],
       'dependencies': [
-        'deps/libvorbis/libvorbis.gyp:libvorbis',
-        'deps/libvorbis/libvorbis.gyp:vorbisenc',
+        'libvorbis.gyp:libvorbis',
+        'libvorbis.gyp:vorbisenc',
       ],
     }
   ]
