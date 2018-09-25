@@ -22,7 +22,7 @@
     "buffer-alloc": "^1.1.0",
     "debug": "^2.2.0",
     "nan": "^2.10.0",
-    "ogg": "^1.2.5",
+    "ogg": "github:bluehexagons/node-ogg",
     "readable-stream": "^2.3.6"
   },
   "devDependencies": {
