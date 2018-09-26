@@ -23,6 +23,7 @@
 #include <node.h>
 #include <nan.h>
 #include <string.h>
+#include <stdint.h>
 
 #include "node_buffer.h"
 #include "node_pointer.h"
@@ -379,24 +380,59 @@ NAN_METHOD(node_vorbis_synthesis_pcmout) {
   v8::Local<Value> rtn;
   vorbis_dsp_state *vd = UnwrapPointer<vorbis_dsp_state *>(info[0]);
   int channels = info[1]->Int32Value();
+  int bitDepth = info[2]->Int32Value();
 
   samples = vorbis_synthesis_pcmout(vd, &pcm);
 
   if (samples > 0) {
     /* we need to interlace the pcm float data... */
-    Nan::MaybeLocal<Object> buffer = Nan::NewBuffer(samples * channels * sizeof(float));
-    float *buf = reinterpret_cast<float *>(Buffer::Data(buffer.ToLocalChecked()));
     int i, j;
-    for (i = 0; i < channels; i++) {
-      float *ptr = buf + i;
-      float *mono = pcm[i];
-      for (j = 0; j < samples; j++) {
-        *ptr = mono[j];
-        ptr += channels;
+    switch (bitDepth) {
+    case 32: {
+      Nan::MaybeLocal<Object> buffer32 = Nan::NewBuffer(samples * channels * sizeof(float));
+      float *buf32 = reinterpret_cast<float *>(Buffer::Data(buffer32.ToLocalChecked()));
+      for (i = 0; i < channels; i++) {
+        float *ptr = buf32 + i;
+        float *mono = pcm[i];
+        for (j = 0; j < samples; j++) {
+          *ptr = mono[j];
+          ptr += channels;
+        }
       }
+      vorbis_synthesis_read(vd, samples);
+      rtn = buffer32.ToLocalChecked();
+    } break;
+    case 16: {
+      Nan::MaybeLocal<Object> buffer16 = Nan::NewBuffer(samples * channels * sizeof(int16_t));
+      int16_t *buf16 = reinterpret_cast<int16_t *>(Buffer::Data(buffer16.ToLocalChecked()));
+      for (i = 0; i < channels; i++) {
+        int16_t *ptr = buf16 + i;
+        float *mono = pcm[i];
+        for (j = 0; j < samples; j++) {
+          float v = mono[j];
+          *ptr = (int16_t)(v >= 0 ? v * (float)INT16_MAX + 0.5f : v * (float)INT16_MIN + 0.5f);
+          ptr += channels;
+        }
+      }
+      vorbis_synthesis_read(vd, samples);
+      rtn = buffer16.ToLocalChecked();
+    } break;
+    case 8: {
+      Nan::MaybeLocal<Object> buffer8 = Nan::NewBuffer(samples * channels * sizeof(int16_t));
+      uint8_t *buf8 = reinterpret_cast<uint8_t *>(Buffer::Data(buffer8.ToLocalChecked()));
+      for (i = 0; i < channels; i++) {
+        uint8_t *ptr = buf8 + i;
+        float *mono = pcm[i];
+        for (j = 0; j < samples; j++) {
+          float v = mono[j];
+          *ptr = (uint8_t)(v >= 0 ? v * 127.f + 0.5f : v * 128.f + 0.5f);
+          ptr += channels;
+        }
+      }
+      vorbis_synthesis_read(vd, samples);
+      rtn = buffer8.ToLocalChecked();
+    } break;
     }
-    vorbis_synthesis_read(vd, samples);
-    rtn = buffer.ToLocalChecked();
   } else {
     /* an error or 0 samples */
     rtn = Nan::New<Integer>(samples);
