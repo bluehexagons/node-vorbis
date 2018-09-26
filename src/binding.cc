@@ -418,7 +418,7 @@ NAN_METHOD(node_vorbis_synthesis_pcmout) {
       rtn = buffer16.ToLocalChecked();
     } break;
     case 8: {
-      Nan::MaybeLocal<Object> buffer8 = Nan::NewBuffer(samples * channels * sizeof(int16_t));
+      Nan::MaybeLocal<Object> buffer8 = Nan::NewBuffer(samples * channels * sizeof(int8_t));
       uint8_t *buf8 = reinterpret_cast<uint8_t *>(Buffer::Data(buffer8.ToLocalChecked()));
       for (i = 0; i < channels; i++) {
         uint8_t *ptr = buf8 + i;
