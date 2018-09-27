@@ -1,4 +1,4 @@
-export = class Decoder extends require('readable-stream/transform') {
+declare class Decoder extends require('readable-stream/transform') {
   channels: number
   sampleRate: number
   bitDepth: number
@@ -11,3 +11,5 @@ export = class Decoder extends require('readable-stream/transform') {
   bitrateLower: number
   bitrateWindow: number
 }
+
+export default Decoder
