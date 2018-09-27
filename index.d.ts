@@ -1,7 +1,7 @@
 import VorbisDecoder from './lib/decoder'
 import VorbisEncoder from './lib/encoder'
 
-declare module Vorbis {
+declare namespace Vorbis {
   export function isVorbis(oggPacket: any, callback: (result: boolean) => void): void
   export const Decoder = VorbisDecoder
   export const Encoder = VorbisEncoder
