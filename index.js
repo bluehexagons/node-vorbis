@@ -31,3 +31,9 @@ exports.Decoder = require('./lib/decoder');
  */
 
 exports.Encoder = require('./lib/encoder');
+
+/**
+ * The `Error` class. It stores extra information about errors.
+ */
+
+exports.Error = require('./lib/error');
