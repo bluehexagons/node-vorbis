@@ -5,4 +5,4 @@ declare class VorbisError extends Error {
   constructor(code: number, funcName: string)
 }
 
-export default VorbisError
+export = VorbisError

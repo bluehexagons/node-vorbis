@@ -12,4 +12,4 @@ declare class Decoder extends require('readable-stream/transform') {
   bitrateWindow: number
 }
 
-export default Decoder
+export = Decoder

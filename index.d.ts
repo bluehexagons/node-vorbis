@@ -8,4 +8,4 @@ declare namespace Vorbis {
   export const version: number
 }
 
-export default Vorbis
+export = Vorbis
