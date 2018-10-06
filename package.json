@@ -23,7 +23,7 @@
     "debug": "^4.0.1",
     "nan": "^2.11.1",
     "ogg": "github:bluehexagons/node-ogg",
-    "readable-stream": "^3.0.3"
+    "readable-stream": "^3.0.6"
   },
   "devDependencies": {
     "mocha": "^5.2.0"
