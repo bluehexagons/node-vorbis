@@ -410,7 +410,7 @@ NAN_METHOD(node_vorbis_synthesis_pcmout) {
         float *mono = pcm[i];
         for (j = 0; j < samples; j++) {
           float v = mono[j];
-          *ptr = (int16_t)(v >= 0 ? v * (float)INT16_MAX + 0.5f : -v * (float)INT16_MIN - 0.5f);
+          *ptr = (int16_t)(v >= 1.0 ? INT16_MAX : v <= INT16_MIN ? 0 : v >= 0 ? v * (float)INT16_MAX + 0.5f : -v * (float)INT16_MIN - 0.5f);
           ptr += channels;
         }
       }
@@ -425,7 +425,7 @@ NAN_METHOD(node_vorbis_synthesis_pcmout) {
         float *mono = pcm[i];
         for (j = 0; j < samples; j++) {
           float v = mono[j];
-          *ptr = (uint8_t)(v >= 0 ? v * 127.f + 128.5f : v * 128.f + 127.5f);
+          *ptr = (uint8_t)(v >= 1.0 ? 255 : v <= -1.0 ? 0 : v >= 0.0 ? v * 127.f + 128.5f : v * 128.f + 127.5f);
           ptr += channels;
         }
       }
