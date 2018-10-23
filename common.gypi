@@ -7,6 +7,7 @@
     'node_ogg': '<!(node -p -e "require(\'path\').dirname(require.resolve(\'ogg\'))")',
     'ogg_include_dirs': [
       '<(node_ogg)/libogg/include',
+      '<(node_ogg)/include',
       '<(node_ogg)/libogg/config/<(OS)/<(target_arch)',
     ],
     'conditions': [
